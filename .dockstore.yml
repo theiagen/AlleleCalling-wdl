@@ -1,0 +1,7 @@
+version: 1.2
+workflows:
+ - name: AlleleCalling-wdl
+   subclass: WDL
+   primaryDescriptorPath: /workflows/wf_allelecalling.wdl
+   testParameterFiles:
+    - /test/inputs/empty.json
