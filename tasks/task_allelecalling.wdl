@@ -4,10 +4,10 @@ task allelecalling {
   input {
     File assembly
     String samplename
-    String blastdb_tar
+    File blastdb_tar
     File loci
     Int blast_similarity = 75
-    String docker = "us-docker.pkg.dev/general-theiagen/docker-private/allelecalling:4274fc"
+    String docker = "us-docker.pkg.dev/general-theiagen/pni-docker-repo/allelecalling:4274fc"
     Boolean debug = false
     Int memory = 4
     Int disk_size = 100
