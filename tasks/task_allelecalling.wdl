@@ -21,14 +21,16 @@ task allelecalling {
     tar -xzf ~{blastdb_tar} -C blast_allele_db/
 
     echo "DEBUG: Detecting if assembly file is compressed..."
+    mkdir input_assembly/
     if [[ ! ~{assembly} == *.gz ]]; then
         echo "DEBUG: Assembly file is not compressed, compressing..."
-        gzip ~{assembly}
+        filename=$(basename ~{assembly})
+        gzip -c ~{assembly} > input_assembly/${filename%.*}.fasta.gz
+    else
+        echo "DEBUG: Moving assembly file into input folder..."
+        cp ~{assembly} input_assembly/
     fi
 
-    echo "DEBUG: Moving assembly file into input folder..."
-    mkdir input_assembly/
-    cp ~{assembly} input_assembly/
 
     # Run the pipeline
     echo "DEBUG: Running allelecalling with the following command:"
