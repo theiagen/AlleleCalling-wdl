@@ -9,14 +9,20 @@ workflow allelecalling_wf {
   input {
     File assembly
     String samplename
-    File blastdb_tar
+    File blastdb_alleleinfo
+    File blastdb_nhr
+    File blastdb_nin
+    File blastdb_nsq
     File loci
   }
   call allelecalling_task.allelecalling {
     input:
       assembly = assembly,
       samplename = samplename,
-      blastdb_tar = blastdb_tar,
+      blastdb_alleleinfo = blastdb_alleleinfo,
+      blastdb_nhr = blastdb_nhr,
+      blastdb_nin = blastdb_nin,
+      blastdb_nsq = blastdb_nsq,
       loci = loci
   }
   output {

@@ -4,7 +4,10 @@ task allelecalling {
   input {
     File assembly
     String samplename
-    File blastdb_tar
+    File blastdb_alleleinfo
+    File blastdb_nhr
+    File blastdb_nin
+    File blastdb_nsq
     File loci
     Int blast_similarity = 75
     String docker = "us-docker.pkg.dev/general-theiagen/pni-docker-repo/allelecalling:4274fc"
@@ -16,9 +19,9 @@ task allelecalling {
     date | tee DATE
 
     # Uncompress the blastdb files into a new folder
-    echo "DEBUG: Uncompressing blastdb files..."
+    echo "DEBUG: Moving blastdb files..."
     mkdir blast_allele_db/
-    tar -xzf ~{blastdb_tar} -C blast_allele_db/
+    mv ~{blastdb_alleleinfo} ~{blastdb_nhr} ~{blastdb_nin} ~{blastdb_nsq} blast_allele_db/
 
     echo "DEBUG: Detecting if assembly file is compressed..."
     mkdir input_assembly/
