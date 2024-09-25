@@ -41,7 +41,7 @@ task allelecalling {
     if nextflow run /pn2.0_wgmlst/AlleleCalling.nf \
         -c /pn2.0_wgmlst/scicomp.config \
         -profile local \
-        --blastdb $PWD/blast_allele_db/ \
+        --blastdb blast_allele_db/ \
         --loci ~{loci} \
         --input_assemblies input_assembly/ \
         --publish_dir ~{samplename} \
