@@ -21,7 +21,7 @@ task allelecalling {
     # Uncompress the blastdb files into a new folder
     echo "DEBUG: Moving blastdb files..."
     mkdir blast_allele_db/
-    mv ~{blastdb_alleleinfo} ~{blastdb_nhr} ~{blastdb_nin} ~{blastdb_nsq} blast_allele_db/
+    cp ~{blastdb_alleleinfo} ~{blastdb_nhr} ~{blastdb_nin} ~{blastdb_nsq} blast_allele_db/
 
     echo "DEBUG: Detecting if assembly file is compressed..."
     mkdir input_assembly/
