@@ -52,6 +52,9 @@ task allelecalling {
         --blast_kb /pn2.0_wgmlst/knowledge_bases/blast_kb/ \
         --qckb /pn2.0_wgmlst/knowledge_bases/qc_kb ; then 
 
+        # save nextflow log file
+        cp .nextflow.log ~{samplename}_nextflow.log
+
         # Everything finished, pack up the results
         if [[ "~{debug}" == "false" ]]; then
             # not in debug mode, clean up
@@ -81,6 +84,7 @@ task allelecalling {
   output {
     String allelecalling_docker = docker
     String allelecalling_analysis_date = read_string("DATE")
+    String allelecalling_nextflow_log = "~{samplename}_nextflow.log"
     File allelecalling_output_json = "~{samplename}_outputs.json"
     File allelecalling_stats = "~{samplename}_stats_calls.json.gz"
     File allelecalling_allele_calls_bam = "~{samplename}_allele_calls.bam"
