@@ -21,29 +21,32 @@ task allelecalling {
     # Uncompress the blastdb files into a new folder
     echo "DEBUG: Moving blastdb files..."
     mkdir blast_allele_db/
-    cp ~{blastdb_alleleinfo} ~{blastdb_nhr} ~{blastdb_nin} ~{blastdb_nsq} $PWD/blast_allele_db/
+    cp ~{blastdb_alleleinfo} ~{blastdb_nhr} ~{blastdb_nin} ~{blastdb_nsq} blast_allele_db/
+    echo "DEBUG: Listing blastdb files..."
+    echo $(ls blast_allele_db/)
 
     echo "DEBUG: Detecting if assembly file is compressed..."
     mkdir input_assembly/
     if [[ ! ~{assembly} == *.gz ]]; then
         echo "DEBUG: Assembly file is not compressed, compressing..."
         filename=$(basename ~{assembly})
-        gzip -c ~{assembly} > $PWD/input_assembly/${filename%.*}.fasta.gz
+        gzip -c ~{assembly} > input_assembly/${filename%.*}.fasta.gz
     else
         echo "DEBUG: Moving assembly file into input folder..."
-        cp ~{assembly} $PWD/input_assembly/
+        cp ~{assembly} input_assembly/
     fi
-
-
+    echo "DEBUG: Listing input assembly files..."
+    echo $(ls input_assembly/)
+    
     # Run the pipeline
     echo "DEBUG: Running allelecalling with the following command:"
     echo "DEBUG: nextflow run /pn2.0_wgmlst/AlleleCalling.nf -c /pn2.0_wgmlst/scicomp.config -profile local --blastdb blast_allele_db/ --loci ~{loci} --input_assemblies input_assembly/ --publish_dir ~{samplename} --blast_similarity ~{blast_similarity} --blast_kb pn2.0_wgmlst/knowledge_bases/blast_kb/ --qckb /pn2.0_wgmlst/knowledge_bases/qc_kb"
     if nextflow run /pn2.0_wgmlst/AlleleCalling.nf \
         -c /pn2.0_wgmlst/scicomp.config \
         -profile local \
-        --blastdb $PWD/blast_allele_db/ \
+        --blastdb blast_allele_db/ \
         --loci ~{loci} \
-        --input_assemblies $PWD/input_assembly/ \
+        --input_assemblies input_assembly/ \
         --publish_dir ~{samplename} \
         --blast_similarity ~{blast_similarity} \
         --blast_kb /pn2.0_wgmlst/knowledge_bases/blast_kb/ \
