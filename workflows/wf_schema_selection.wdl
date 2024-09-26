@@ -12,8 +12,8 @@ workflow schema_selection {
     File? blastdb_nsq
     File? loci
   }
-    Boolean is_schema_allowed = schema == "CAMPY" || schema == "CBOT" || schema == "CRONO" || schema == "LISTERIA" || schema == "SALM" || schema == "STEC" || schema == "VIBR"
 
+   Boolean is_schema_allowed = schema == "CAMPY" || schema == "CBOT" || schema == "CRONO" || schema == "LISTERIA" || schema == "SALM" || schema == "STEC" || schema == "VIBR"
 
   if (schema == "CAMPY") {
     File CAMPY_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CAMPY/alleleinfo.txt_0"
@@ -22,6 +22,7 @@ workflow schema_selection {
     File CAMPY_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CAMPY/alleles_0.nsq"
     File CAMPY_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CAMPY/loci.tsv"
   }
+
   if (schema == "CBOT") {
     File CBOT_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CBOT/alleleinfo.txt_0"
     File CBOT_blastdb_nhr = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CBOT/alleles_0.nhr"
@@ -29,6 +30,7 @@ workflow schema_selection {
     File CBOT_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CBOT/alleles_0.nsq"
     File CBOT_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CBOT/loci.tsv"
   }
+
   if (schema == "CRONO") {
     File CRONO_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CRONO/alleleinfo.txt_0"
     File CRONO_blastdb_nhr = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CRONO/alleles_0.nhr"
@@ -36,6 +38,7 @@ workflow schema_selection {
     File CRONO_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CRONO/alleles_0.nsq"
     File CRONO_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/CRONO/loci.tsv"
   }
+
   if (schema == "LISTERIA") {
     File LISTERIA_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/LISTERIA/alleleinfo.txt_0"
     File LISTERIA_blastdb_nhr = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/LISTERIA/alleles_0.nhr"
@@ -43,6 +46,7 @@ workflow schema_selection {
     File LISTERIA_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/LISTERIA/alleles_0.nsq"
     File LISTERIA_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/LISTERIA/loci.tsv"
   }
+
   if (schema == "SALM") {
     File SALM_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/SALM/alleleinfo.txt_0"
     File SALM_blastdb_nhr = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/SALM/alleles_0.nhr"
@@ -50,6 +54,7 @@ workflow schema_selection {
     File SALM_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/SALM/alleles_0.nsq"
     File SALM_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/SALM/loci.tsv"
   }
+
   if (schema == "STEC") {
     File STEC_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/STEC/alleleinfo.txt_0"
     File STEC_blastdb_nhr = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/STEC/alleles_0.nhr"
@@ -57,6 +62,7 @@ workflow schema_selection {
     File STEC_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/STEC/alleles_0.nsq"
     File STEC_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/STEC/loci.tsv"
   }
+
   if (schema == "VIBR") {
     File VIBR_blastdb_alleleinfo = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/VIBR/alleleinfo.txt_0"
     File VIBR_blastdb_nhr = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/VIBR/alleles_0.nhr"
@@ -64,6 +70,7 @@ workflow schema_selection {
     File VIBR_blastdb_nsq = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/VIBR/alleles_0.nsq"
     File VIBR_loci = "gs://theiagen-large-public-files-rp/cdc-pni/pn2.0-mlst-databases/db/VIBR/loci.tsv"
   }
+
   output {
     File selected_blastdb_alleleinfo = select_first([blastdb_alleleinfo, CAMPY_blastdb_alleleinfo, CBOT_blastdb_alleleinfo, CRONO_blastdb_alleleinfo, LISTERIA_blastdb_alleleinfo, SALM_blastdb_alleleinfo, STEC_blastdb_alleleinfo, VIBR_blastdb_alleleinfo, "gs://theiagen-large-public-files-rp/cdc-pni/empty_alleleinfo.txt_o"])
     File selected_blastdb_nhr = select_first([blastdb_nhr, CAMPY_blastdb_nhr, CBOT_blastdb_nhr, CRONO_blastdb_nhr, LISTERIA_blastdb_nhr, SALM_blastdb_nhr, STEC_blastdb_nhr, VIBR_blastdb_nhr, "gs://theiagen-large-public-files-rp/cdc-pni/empty.nhr"])
