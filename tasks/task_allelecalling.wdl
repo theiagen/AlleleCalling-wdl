@@ -4,7 +4,10 @@ task allelecalling {
   input {
     File assembly
     String samplename
-    File blastdb_tar
+    File blastdb_alleleinfo
+    File blastdb_nhr
+    File blastdb_nin
+    File blastdb_nsq
     File loci
     Int blast_similarity = 75
     String docker = "us-docker.pkg.dev/general-theiagen/pni-docker-repo/allelecalling:4274fc"
@@ -16,22 +19,25 @@ task allelecalling {
     date | tee DATE
 
     # Uncompress the blastdb files into a new folder
-    echo "DEBUG: Uncompressing blastdb files..."
-    mkdir blast_allele_db/
-    tar -xzf ~{blastdb_tar} -C blast_allele_db/
+    echo "DEBUG: Moving blastdb files..."
+    mkdir $PWD/blast_allele_db/
+    cp ~{blastdb_alleleinfo} ~{blastdb_nhr} ~{blastdb_nin} ~{blastdb_nsq} $PWD/blast_allele_db/
+    echo "DEBUG: Listing blastdb files..."
+    echo $(ls $PWD/blast_allele_db/)
 
     echo "DEBUG: Detecting if assembly file is compressed..."
-    mkdir input_assembly/
+    mkdir $PWD/input_assembly/
     if [[ ! ~{assembly} == *.gz ]]; then
         echo "DEBUG: Assembly file is not compressed, compressing..."
         filename=$(basename ~{assembly})
-        gzip -c ~{assembly} > input_assembly/${filename%.*}.fasta.gz
+        gzip -c ~{assembly} > $PWD/input_assembly/${filename%.*}.fasta.gz
     else
         echo "DEBUG: Moving assembly file into input folder..."
-        cp ~{assembly} input_assembly/
+        cp ~{assembly} $PWD/input_assembly/
     fi
-
-
+    echo "DEBUG: Listing input assembly files..."
+    echo $(ls $PWD/input_assembly/)
+    
     # Run the pipeline
     echo "DEBUG: Running allelecalling with the following command:"
     echo "DEBUG: nextflow run /pn2.0_wgmlst/AlleleCalling.nf -c /pn2.0_wgmlst/scicomp.config -profile local --blastdb blast_allele_db/ --loci ~{loci} --input_assemblies input_assembly/ --publish_dir ~{samplename} --blast_similarity ~{blast_similarity} --blast_kb pn2.0_wgmlst/knowledge_bases/blast_kb/ --qckb /pn2.0_wgmlst/knowledge_bases/qc_kb"
@@ -40,11 +46,14 @@ task allelecalling {
         -profile local \
         --blastdb $PWD/blast_allele_db/ \
         --loci ~{loci} \
-        --input_assemblies input_assembly/ \
+        --input_assemblies $PWD/input_assembly/ \
         --publish_dir ~{samplename} \
         --blast_similarity ~{blast_similarity} \
         --blast_kb /pn2.0_wgmlst/knowledge_bases/blast_kb/ \
         --qckb /pn2.0_wgmlst/knowledge_bases/qc_kb ; then 
+
+        # save nextflow log file
+        cp .nextflow.log ~{samplename}_nextflow.log
 
         # Everything finished, pack up the results
         if [[ "~{debug}" == "false" ]]; then
@@ -55,7 +64,6 @@ task allelecalling {
         # rename output files
         echo "DEBUG: Renaming output files..."
         mv ~{samplename}/*/outputs.json ~{samplename}_outputs.json
-        mv ~{samplename}/*/stats_calls.json.gz ~{samplename}_stats_calls.json.gz
         mv ~{samplename}/*/stats_calls.json.gz ~{samplename}_stats_calls.json.gz
         mv ~{samplename}/*/allele_calls.bam ~{samplename}_allele_calls.bam
         mv ~{samplename}/*/allele_calls.xml.gz ~{samplename}_allele_calls.xml.gz
@@ -75,6 +83,7 @@ task allelecalling {
   output {
     String allelecalling_docker = docker
     String allelecalling_analysis_date = read_string("DATE")
+    File allelecalling_nextflow_log = "~{samplename}_nextflow.log"
     File allelecalling_output_json = "~{samplename}_outputs.json"
     File allelecalling_stats = "~{samplename}_stats_calls.json.gz"
     File allelecalling_allele_calls_bam = "~{samplename}_allele_calls.bam"
