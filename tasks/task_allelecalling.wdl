@@ -65,7 +65,6 @@ task allelecalling {
         echo "DEBUG: Renaming output files..."
         mv ~{samplename}/*/outputs.json ~{samplename}_outputs.json
         mv ~{samplename}/*/stats_calls.json.gz ~{samplename}_stats_calls.json.gz
-        mv ~{samplename}/*/stats_calls.json.gz ~{samplename}_stats_calls.json.gz
         mv ~{samplename}/*/allele_calls.bam ~{samplename}_allele_calls.bam
         mv ~{samplename}/*/allele_calls.xml.gz ~{samplename}_allele_calls.xml.gz
         mv ~{samplename}/*/allele_calls.json.gz ~{samplename}_allele_calls.json.gz
@@ -84,7 +83,7 @@ task allelecalling {
   output {
     String allelecalling_docker = docker
     String allelecalling_analysis_date = read_string("DATE")
-    String allelecalling_nextflow_log = "~{samplename}_nextflow.log"
+    File allelecalling_nextflow_log = "~{samplename}_nextflow.log"
     File allelecalling_output_json = "~{samplename}_outputs.json"
     File allelecalling_stats = "~{samplename}_stats_calls.json.gz"
     File allelecalling_allele_calls_bam = "~{samplename}_allele_calls.bam"
