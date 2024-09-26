@@ -1,6 +1,7 @@
 version 1.0
 
 import "../tasks/task_allelecalling.wdl" as allelecalling_task
+import "wf_scheme_selection.wdl" as scheme_selection
 
 workflow allelecalling_wf {
   meta {
@@ -9,23 +10,25 @@ workflow allelecalling_wf {
   input {
     File assembly
     String samplename
-    File blastdb_alleleinfo
-    File blastdb_nhr
-    File blastdb_nin
-    File blastdb_nsq
-    File loci
+    String scheme
+  }
+  call scheme_selection.scheme_selection {
+    input:
+      scheme = scheme
   }
   call allelecalling_task.allelecalling {
     input:
       assembly = assembly,
       samplename = samplename,
-      blastdb_alleleinfo = blastdb_alleleinfo,
-      blastdb_nhr = blastdb_nhr,
-      blastdb_nin = blastdb_nin,
-      blastdb_nsq = blastdb_nsq,
-      loci = loci
+      blastdb_alleleinfo = scheme_selection.selected_blastdb_alleleinfo,
+      blastdb_nhr = scheme_selection.selected_blastdb_nhr,
+      blastdb_nin = scheme_selection.selected_blastdb_nin,
+      blastdb_nsq = scheme_selection.selected_blastdb_nsq,
+      loci = scheme_selection.selected_loci
   }
   output {
+    String allelecalling_selected_scheme = scheme_selection.selected_scheme
+    String allelecalling_selected_scheme_warning = scheme_selection.warning_message
     String allelecalling_docker = allelecalling.allelecalling_docker
     String allelecalling_analysis_date = allelecalling.allelecalling_analysis_date
     File allelecalling_output_json = allelecalling.allelecalling_output_json
