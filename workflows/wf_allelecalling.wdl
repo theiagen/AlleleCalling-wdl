@@ -1,6 +1,7 @@
 version 1.0
 
 import "../tasks/task_allelecalling.wdl" as allelecalling_task
+import "../tasks/task_clean_assembly.wdl" as clean_assembly_task
 import "wf_scheme_selection.wdl" as scheme_selection
 
 workflow allelecalling_wf {
@@ -16,9 +17,13 @@ workflow allelecalling_wf {
     input:
       scheme = scheme
   }
+  call clean_assembly_task.clean_assembly {
+    input:
+      assembly = assembly
+  }
   call allelecalling_task.allelecalling {
     input:
-      assembly = assembly,
+      assembly = clean_assembly.cleaned_assembly,
       samplename = samplename,
       blastdb_alleleinfo = scheme_selection.selected_blastdb_alleleinfo,
       blastdb_nhr = scheme_selection.selected_blastdb_nhr,
