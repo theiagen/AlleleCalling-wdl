@@ -3,6 +3,7 @@ version 1.0
 import "../tasks/task_allelecalling.wdl" as allelecalling_task
 import "../tasks/task_clean_assembly.wdl" as clean_assembly_task
 import "wf_scheme_selection.wdl" as scheme_selection
+import "wf_cgmlst_core_selection.wdl" as cgmlst_core_selection
 
 workflow allelecalling_wf {
   meta {
@@ -31,6 +32,19 @@ workflow allelecalling_wf {
       blastdb_nsq = scheme_selection.selected_blastdb_nsq,
       loci = scheme_selection.selected_loci
   }
+  call cgmlst_core_selection.cgmlst_core_selection {
+    input:
+      scheme = scheme
+  }
+  call cgmlst_core_task.cgmlst_core {
+    input:
+      samplename = samplename,
+      allelecalling_csv_core_standard = allelecalling.allelecalling_csv_core_standard,
+      selected_cgmlst_core_db = cgmlst_core_selection.selected_cgmlst_core_db,
+      selected_scheme = cgmlst_core_selection.selected_scheme,
+      selected_cgmlst_core_threshold = cgmlst_core_selection.selected_cgmlst_core_threshold
+  }
+
   output {
     String allelecalling_selected_scheme = scheme_selection.selected_scheme
     String allelecalling_selected_scheme_warning = scheme_selection.warning_message
@@ -47,5 +61,7 @@ workflow allelecalling_wf {
     File allelecalling_csv_accessory_standard = allelecalling.allelecalling_csv_accessory_standard
     File allelecalling_csv_accessory_pcr = allelecalling.allelecalling_csv_accessory_pcr
     File allelecalling_log = allelecalling.allelecalling_log
+    File cgmlst_core_tree = cgmlst_core_task.cgmlst_core_tree
+    File cgmlst_distance_matrix = cgmlst_core_task.cgmlst_distance_matrix
   }
 }
