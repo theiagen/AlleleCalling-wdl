@@ -7,7 +7,7 @@ task cgmlst_core {
     File selected_cgmlst_core_db
     String selected_scheme
     Int selected_cgmlst_core_threshold
-    String docker = "us-docker.pkg.dev/general-theiagen/theiapulse/xxxx:xxxx"
+    String docker = "us-docker.pkg.dev/general-theiagen/docker-private/theiapulse:0.0.1"
     Boolean debug = false
     Int memory = 16
     Int cpus = 4
@@ -16,9 +16,7 @@ task cgmlst_core {
   command <<<
     date | tee DATE
 
-    cgmlst-query.py -r ~{selected_cgmlst_core_db} -q ~{allelecalling_csv_core_standard} -o output_file.csv -t ~{selected_cgmlst_core_threshold} -d ~{samplename}_core_cgmlst_distance.tsv -p distance_matrix.phy
-
-    iqtree2 -s distance_matrix.phy -st MORPH -m HKY -nt AUTO -bb 1000 -t BIONJ > ~{samplename}_core_cgmlst_tree.nwk
+    cgmlst-query.py -r ~{selected_cgmlst_core_db} -q ~{allelecalling_csv_core_standard} -t ~{selected_cgmlst_core_threshold} -d ~{samplename}_core_cgmlst_distance.tsv -tree ~{samplename}_core_cgmlst_tree.nwk
 
   >>>
   output {

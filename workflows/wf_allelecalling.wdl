@@ -2,6 +2,7 @@ version 1.0
 
 import "../tasks/task_allelecalling.wdl" as allelecalling_task
 import "../tasks/task_clean_assembly.wdl" as clean_assembly_task
+import "../tasks/task_cgmlst_core.wdl" as cgmlst_core_task
 import "wf_scheme_selection.wdl" as scheme_selection
 import "wf_cgmlst_core_selection.wdl" as cgmlst_core_selection
 
